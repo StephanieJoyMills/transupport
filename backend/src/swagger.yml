@@ -131,13 +131,18 @@ paths:
       responses:
         200:
           description: Successfully deleted a person from people list
-  /accounts/priority:
+  /accounts:
     get:
-      operationId: accounts.priority
+      operationId: accounts.getAccounts
       tags:
         - accounts
-      summary: Gets priority accounts
-      description: Get both at risk and late accounts
+      summary: Gets accounts
+      description: Gets accounts with flag = all, resolved, priority, cancelled, non-resolved
+      parameters:
+        - name: include
+          in: query
+          type: string
+          required: True
       responses:
         200:
           description: Successfully read priority accounts
@@ -157,29 +162,5 @@ paths:
                   type: string
                 quantity:
                   type: integer
-  /accounts/resolved:
-    get:
-      operationId: accounts.resolved
-      tags:
-        - accounts
-      summary: Gets resolved accounts
-      description: Get accounts where transportation methods is selected
-      responses:
-        200:
-          description: Successfully read resolved accounts
-          schema:
-            type: array
-            items:
-              properties:
-                product_code:
+                transportation:
                   type: string
-                style_number:
-                  type: string
-                ETA:
-                  type: string
-                customer:
-                  type: string
-                transportation_type:
-                  type: string
-                quantity:
-                  type: integer

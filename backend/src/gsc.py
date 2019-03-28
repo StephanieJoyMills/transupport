@@ -8,6 +8,16 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
+accountTemplate = {
+    "product_code": "",
+    "style_number": "",
+    "ETA": "",
+    "customer": "",
+    "type": "",
+    "transportation": "",
+    "quantity": "",
+}
+
 # The ID and range of a sample spreadsheet.
 # SAMPLE_SPREADSHEET_ID = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
 # SAMPLE_RANGE_NAME = "CCC-Report!A2:D"
@@ -82,67 +92,141 @@ def extractData(sheet_id, range_name):
 
 def getPriorityAccounts():
     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
-    range_name = "CCC-Report!A2:H"
+    range_name = "CCC-Report!A2:H55"
     values = extractData(sheet_id, range_name)
-    newAccount = {
-        "product_code": "",
-        "style_number": "",
-        "ETA": "",
-        "customer": "",
-        "type": "",
-        "quantity": "",
-    }
     if not values:
         return "No data found."
     else:
-        priorityAccounts = []
+        accounts = []
         for row in values:
             if row[6] == "-" and row[7] == "not selected":
+                newAccount = accountTemplate.copy()
                 newAccount["product_code"] = row[0]
                 newAccount["style_number"] = row[1]
                 newAccount["ETA"] = row[2]
                 newAccount["customer"] = row[3]
-                if row[4] == "-":
+                newAccount["transportation"] = "not selected"
+
+                if row[4] != "-":
                     newAccount["type"] = "At Risk"
-                    newAccount["quantity"] = row[5]
+                    newAccount["quantity"] = row[4]
                 else:
                     newAccount["type"] = "Late"
-                    newAccount["quantity"] = row[6]
-                priorityAccounts.append(newAccount)
-    return priorityAccounts
+                    newAccount["quantity"] = row[5]
+
+                accounts.append(newAccount)
+
+    return accounts
 
 
 def getResolvedAccounts():
     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
-    range_name = "CCC-Report!A2:H"
+    range_name = "CCC-Report!A2:H55"
     values = extractData(sheet_id, range_name)
-    newAccount = {
-        "product_code": "",
-        "style_number": "",
-        "ETA": "",
-        "customer": "",
-        "transportation_type": "",
-        "quantity": "",
-    }
+
     if not values:
         return "No data found."
     else:
-        priorityAccounts = []
+        accounts = []
         for row in values:
             if row[7] != "not selected":
+                newAccount = accountTemplate.copy()
                 newAccount["product_code"] = row[0]
                 newAccount["style_number"] = row[1]
                 newAccount["ETA"] = row[2]
                 newAccount["customer"] = row[3]
-                newAccount["transportation_type"] = row[7]
+                newAccount["type"] = "resolved"
+                newAccount["transportation"] = row[7]
                 if row[4] != "-":
                     newAccount["quantity"] = row[4]
                 elif row[5] != "-":
                     newAccount["quantity"] = row[5]
                 else:
                     newAccount["quantity"] = row[6]
-                priorityAccounts.append(newAccount)
-    return priorityAccounts
+                accounts.append(newAccount)
+    return accounts
+
+
+def getCancelledAccounts():
+    sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+    range_name = "CCC-Report!A2:H55"
+    values = extractData(sheet_id, range_name)
+
+    if not values:
+        return "No data found."
+    else:
+        accounts = []
+        for row in values:
+            if row[7] == "not selected" and row[6] != "-":
+                newAccount = accountTemplate.copy()
+                newAccount["product_code"] = row[0]
+                newAccount["style_number"] = row[1]
+                newAccount["ETA"] = row[2]
+                newAccount["customer"] = row[3]
+                newAccount["type"] = "cancelled"
+                newAccount["transportation"] = "not selected"
+                newAccount["quantity"] = row[7]
+                accounts.append(newAccount)
+    return accounts
+
+
+def getNonResolvedAccounts():
+    sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+    range_name = "CCC-Report!A2:H55"
+    values = extractData(sheet_id, range_name)
+
+    if not values:
+        return "No data found."
+    else:
+        accounts = []
+        for row in values:
+            if row[7] == "not selected":
+                newAccount = accountTemplate.copy()
+                newAccount["product_code"] = row[0]
+                newAccount["style_number"] = row[1]
+                newAccount["ETA"] = row[2]
+                newAccount["customer"] = row[3]
+                newAccount["transportation"] = row[7]
+                if row[4] != "-":
+                    newAccount["quantity"] = row[4]
+                    newAccount["type"] = "At Risk"
+                elif row[5] != "-":
+                    newAccount["quantity"] = row[5]
+                    newAccount["type"] = "Late"
+                else:
+                    newAccount["quantity"] = row[6]
+                    newAccount["type"] = "Cancelled"
+                accounts.append(newAccount)
+    return accounts
+
+
+def getAllAccounts():
+    sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+    range_name = "CCC-Report!A2:H55"
+    values = extractData(sheet_id, range_name)
+
+    if not values:
+        return "No data found."
+    else:
+        accounts = []
+        for row in values:
+            newAccount = accountTemplate.copy()
+            newAccount["product_code"] = row[0]
+            newAccount["style_number"] = row[1]
+            newAccount["ETA"] = row[2]
+            newAccount["customer"] = row[3]
+            newAccount["transportation"] = row[7]
+            if row[4] != "-":
+                newAccount["quantity"] = row[4]
+                newAccount["type"] = "At Risk"
+            elif row[5] != "-":
+                newAccount["quantity"] = row[5]
+                newAccount["type"] = "Late"
+            else:
+                newAccount["quantity"] = row[6]
+                newAccount["type"] = "Cancelled"
+            accounts.append(newAccount)
+    return accounts
 
 
 # if __name__ == "__main__":
