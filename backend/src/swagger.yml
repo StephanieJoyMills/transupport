@@ -158,7 +158,7 @@ paths:
                   type: string
                 customer:
                   type: string
-                type:
+                status:
                   type: string
                 quantity:
                   type: integer

@@ -13,7 +13,7 @@ accountTemplate = {
     "style_number": "",
     "ETA": "",
     "customer": "",
-    "type": "",
+    "status": "",
     "transportation": "",
     "quantity": "",
 }
@@ -108,10 +108,10 @@ def getPriorityAccounts():
                 newAccount["transportation"] = "not selected"
 
                 if row[4] != "-":
-                    newAccount["type"] = "At Risk"
+                    newAccount["status"] = "At Risk"
                     newAccount["quantity"] = row[4]
                 else:
-                    newAccount["type"] = "Late"
+                    newAccount["status"] = "Late"
                     newAccount["quantity"] = row[5]
 
                 accounts.append(newAccount)
@@ -135,7 +135,7 @@ def getResolvedAccounts():
                 newAccount["style_number"] = row[1]
                 newAccount["ETA"] = row[2]
                 newAccount["customer"] = row[3]
-                newAccount["type"] = "resolved"
+                newAccount["status"] = "resolved"
                 newAccount["transportation"] = row[7]
                 if row[4] != "-":
                     newAccount["quantity"] = row[4]
@@ -163,7 +163,7 @@ def getCancelledAccounts():
                 newAccount["style_number"] = row[1]
                 newAccount["ETA"] = row[2]
                 newAccount["customer"] = row[3]
-                newAccount["type"] = "cancelled"
+                newAccount["status"] = "cancelled"
                 newAccount["transportation"] = "not selected"
                 newAccount["quantity"] = row[7]
                 accounts.append(newAccount)
@@ -189,13 +189,13 @@ def getNonResolvedAccounts():
                 newAccount["transportation"] = row[7]
                 if row[4] != "-":
                     newAccount["quantity"] = row[4]
-                    newAccount["type"] = "At Risk"
+                    newAccount["status"] = "At Risk"
                 elif row[5] != "-":
                     newAccount["quantity"] = row[5]
-                    newAccount["type"] = "Late"
+                    newAccount["status"] = "Late"
                 else:
                     newAccount["quantity"] = row[6]
-                    newAccount["type"] = "Cancelled"
+                    newAccount["status"] = "Cancelled"
                 accounts.append(newAccount)
     return accounts
 
@@ -218,13 +218,13 @@ def getAllAccounts():
             newAccount["transportation"] = row[7]
             if row[4] != "-":
                 newAccount["quantity"] = row[4]
-                newAccount["type"] = "At Risk"
+                newAccount["status"] = "At Risk"
             elif row[5] != "-":
                 newAccount["quantity"] = row[5]
-                newAccount["type"] = "Late"
+                newAccount["status"] = "Late"
             else:
                 newAccount["quantity"] = row[6]
-                newAccount["type"] = "Cancelled"
+                newAccount["status"] = "Cancelled"
             accounts.append(newAccount)
     return accounts
 
