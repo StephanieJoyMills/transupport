@@ -112,7 +112,7 @@ paths:
       tags:
         - accounts
       summary: Gets accounts
-      description: Gets accounts with flag = all, resolved, priority, cancelled, non-resolved
+      description: Gets accounts with flag = all, resolved, late, at_risk, cancelled, non_resolved
       parameters:
         - name: include
           in: query

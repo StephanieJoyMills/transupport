@@ -90,32 +90,73 @@ def extractData(sheet_id, range_name):
     return result.get("values", [])
 
 
-def getPriorityAccounts():
+# def getPriorityAccounts():
+#     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+#     range_name = "CCC-Report!A2:H55"
+#     values = extractData(sheet_id, range_name)
+#     if not values:
+#         return "No data found."
+#     else:
+#         accounts = []
+#         for row in values:
+#             if row[6] == "-" and row[7] == "not selected":
+#                 newAccount = accountTemplate.copy()
+#                 newAccount["product_code"] = row[0]
+#                 newAccount["style_number"] = row[1]
+#                 newAccount["ETA"] = row[2]
+#                 newAccount["customer"] = row[3]
+#                 newAccount["transportation"] = "not selected"
+#                 if row[4] != "-":
+#                     newAccount["status"] = "At Risk"
+#                     newAccount["quantity"] = row[4]
+#                 else:
+#                     newAccount["status"] = "Late"
+#                     newAccount["quantity"] = row[5]
+#                 accounts.append(newAccount)
+#     return accounts
+
+
+def getAtRiskAccounts():
     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
-    range_name = "CCC-Report!A2:H55"
+    range_name = "CCC-Report!A2:H"
     values = extractData(sheet_id, range_name)
     if not values:
         return "No data found."
     else:
         accounts = []
         for row in values:
-            if row[6] == "-" and row[7] == "not selected":
+            if row[6] == "-" and row[5] == "-" and row[7] == "not selected":
                 newAccount = accountTemplate.copy()
                 newAccount["product_code"] = row[0]
                 newAccount["style_number"] = row[1]
                 newAccount["ETA"] = row[2]
                 newAccount["customer"] = row[3]
                 newAccount["transportation"] = "not selected"
-
-                if row[4] != "-":
-                    newAccount["status"] = "At Risk"
-                    newAccount["quantity"] = row[4]
-                else:
-                    newAccount["status"] = "Late"
-                    newAccount["quantity"] = row[5]
-
+                newAccount["status"] = "At Risk"
+                newAccount["quantity"] = row[4]
                 accounts.append(newAccount)
+    return accounts
 
+
+def getLateAccounts():
+    sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+    range_name = "CCC-Report!A2:H"
+    values = extractData(sheet_id, range_name)
+    if not values:
+        return "No data found."
+    else:
+        accounts = []
+        for row in values:
+            if row[6] == "-" and row[4] == "-" and row[7] == "not selected":
+                newAccount = accountTemplate.copy()
+                newAccount["product_code"] = row[0]
+                newAccount["style_number"] = row[1]
+                newAccount["ETA"] = row[2]
+                newAccount["customer"] = row[3]
+                newAccount["transportation"] = "not selected"
+                newAccount["status"] = "Late"
+                newAccount["quantity"] = row[5]
+                accounts.append(newAccount)
     return accounts
 
 

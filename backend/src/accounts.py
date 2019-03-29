@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask import make_response, abort
 from gsc import (
-    getPriorityAccounts,
+    getAtRiskAccounts,
+    getLateAccounts,
     getResolvedAccounts,
     getCancelledAccounts,
     getNonResolvedAccounts,
@@ -20,17 +21,22 @@ def getAccounts(include):
     :param lname:   last name of person to find
     :return:        json list of priority accounts
     """
+    print(include)
     # all, resolved, priority, cancelled, non-resolved
-    if include == "priority":
-        accounts = getPriorityAccounts()
+    if include == "at_risk":
+        accounts = getAtRiskAccounts()
+    elif include == "late":
+        accounts = getLateAccounts()
     elif include == "resolved":
         accounts = getResolvedAccounts()
     elif include == "cancelled":
         accounts = getCancelledAccounts()
-    elif include == "non-resolved":
+    elif include == "non_resolved":
         accounts = getNonResolvedAccounts()
-    else:
+    elif include == "all":
         accounts = getAllAccounts()
+    else:
+        accounts = "invaild call"
     return accounts
 
 
@@ -45,6 +51,9 @@ def send_email(email):
     # non-resolved
     sendEmail(email["subject"], email["recipient"], email["body"])
     return "email sent"
+
+
+# def set_transport():
 
 
 # def resolved():
