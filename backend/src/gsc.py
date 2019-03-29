@@ -189,13 +189,13 @@ def getNonResolvedAccounts():
                 newAccount["transportation"] = row[7]
                 if row[4] != "-":
                     newAccount["quantity"] = row[4]
-                    newAccount["status"] = "At Risk"
+                    newAccount["status"] = "at_risk"
                 elif row[5] != "-":
                     newAccount["quantity"] = row[5]
-                    newAccount["status"] = "Late"
+                    newAccount["status"] = "late"
                 else:
                     newAccount["quantity"] = row[6]
-                    newAccount["status"] = "Cancelled"
+                    newAccount["status"] = "cancelled"
                 accounts.append(newAccount)
     return accounts
 
@@ -218,13 +218,13 @@ def getAllAccounts():
             newAccount["transportation"] = row[7]
             if row[4] != "-":
                 newAccount["quantity"] = row[4]
-                newAccount["status"] = "At Risk"
+                newAccount["status"] = "at_risk"
             elif row[5] != "-":
                 newAccount["quantity"] = row[5]
-                newAccount["status"] = "Late"
+                newAccount["status"] = "late"
             else:
                 newAccount["quantity"] = row[6]
-                newAccount["status"] = "Cancelled"
+                newAccount["status"] = "cancelled"
             accounts.append(newAccount)
     return accounts
 

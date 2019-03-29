@@ -7,6 +7,7 @@ from gsc import (
     getNonResolvedAccounts,
     getAllAccounts,
 )
+from emailgenerator import sendEmail
 
 
 def get_timestamp():
@@ -14,9 +15,8 @@ def get_timestamp():
 
 
 def getAccounts(include):
-    print(include)
     """
-    Path: /api/accounts/priority
+    Path: /api/accounts
     :param lname:   last name of person to find
     :return:        json list of priority accounts
     """
@@ -32,6 +32,19 @@ def getAccounts(include):
     else:
         accounts = getAllAccounts()
     return accounts
+
+
+def send_email(email):
+    """
+    Path: /api/send_email
+    :param recipient:   email address of email recipient
+    :param body:    email body
+    :return:        status
+    """
+    # all, resolved, priority, cancelled,
+    # non-resolved
+    sendEmail(email["subject"], email["recipient"], email["body"])
+    return "email sent"
 
 
 # def resolved():

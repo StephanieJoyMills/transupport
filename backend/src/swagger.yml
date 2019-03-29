@@ -92,31 +92,6 @@ paths:
               timestamp:
                 type: string
 
-    put:
-      operationId: people.update
-      tags:
-        - people
-      summary: Update a person in the people list
-      description: Update a person in the people list
-      parameters:
-        - name: lname
-          in: path
-          description: Last name of the person to update in the list
-          type: string
-          required: True
-        - name: person
-          in: body
-          schema:
-            type: object
-            properties:
-              fname:
-                type: string
-              lname:
-                type: string
-      responses:
-        200:
-          description: Successfully updated person in people list
-
     delete:
       operationId: people.delete
       tags:
@@ -164,3 +139,29 @@ paths:
                   type: integer
                 transportation:
                   type: string
+    post:
+      operationId: accounts.send_email
+      tags:
+        - accounts
+      summary: send email with account information
+      description: After a transport method is selected, send an email to required recipient to move order forward
+      parameters:
+        - name: email
+          in: body
+          description: email recipient, body, and subject
+          required: True
+          schema:
+            type: object
+            properties:
+              recipient:
+                type: string
+                description: email recipient
+              subject:
+                type: string
+                description: email subject
+              body:
+                type: string
+                description: email body
+      responses:
+        200:
+          description: Successfully send email
