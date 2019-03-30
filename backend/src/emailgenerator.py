@@ -21,6 +21,9 @@ def sendEmail(subject, recipient, body):
     return
 
 
+sendEmail("dis can be spammed bb", "talent.z@hotmail.com", "huehuehuehuehue <3")
+
+
 # Turn these into plain/html MIMEText objects
 # part1 = MIMEText(text, "plain")
 # part2 = MIMEText(html, "html")

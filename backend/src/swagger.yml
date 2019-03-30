@@ -125,6 +125,8 @@ paths:
             type: array
             items:
               properties:
+                id:
+                  type: integer
                 product_code:
                   type: string
                 style_number:
@@ -165,3 +167,46 @@ paths:
       responses:
         200:
           description: Successfully send email
+  /accounts/count:
+    get:
+      operationId: accounts.getCounts
+      tags:
+        - accounts
+      summary: Gets account counts
+      description: Get the counts of all accounts
+      responses:
+        200:
+          description: Successfully read all counts
+          schema:
+            type: object
+            properties:
+              at_risk:
+                type: integer
+              cancelled:
+                type: integer
+              late:
+                type: integer
+              resolved:
+                type: integer
+  /acount/{id}:
+    put:
+      operationId: accounts.set_transportation
+      tags:
+        - people
+      summary: add the transportation choice to sheet
+      description: update transportation of account by id
+      parameters:
+        - name: id
+          in: path
+          description: id of account to update
+          type: string
+          required: True
+        - name: transportation
+          in: body
+          description: transportation choice
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully updated transportation methods

@@ -7,6 +7,8 @@ from gsc import (
     getCancelledAccounts,
     getNonResolvedAccounts,
     getAllAccounts,
+    setTransportation,
+    getCounts,
 )
 from emailgenerator import sendEmail
 
@@ -50,10 +52,27 @@ def send_email(email):
     # all, resolved, priority, cancelled,
     # non-resolved
     sendEmail(email["subject"], email["recipient"], email["body"])
-    return "email sent"
+    return "email sent!"
 
 
-# def set_transport():
+def set_transportation(id, method):
+    """
+    Path: /api/account/{id}
+    :param id:   id of account
+    :param method:    transportation method selected
+    :return:        status
+    """
+    setTransportation(id, method)
+    return "transportation method set!"
+
+
+def get_counts():
+    """
+    Path: /api/accounts/count
+    :return:        status
+    """
+    counts = getCounts()
+    return counts
 
 
 # def resolved():
