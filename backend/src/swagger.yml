@@ -144,7 +144,7 @@ paths:
     post:
       operationId: accounts.send_email
       tags:
-        - accounts
+        - account
       summary: send email with account information
       description: After a transport method is selected, send an email to required recipient to move order forward
       parameters:
@@ -189,24 +189,42 @@ paths:
               resolved:
                 type: integer
   /acount/{id}:
+    get:
+      operationId: accounts.get_account_details
+      tags:
+        - account
+      summary: get specific account details
+      description: get specific details of an account by id
+      parameters:
+        - name: id
+          in: path
+          description: id of account
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read account details
     put:
       operationId: accounts.set_transportation
       tags:
-        - people
+        - account
       summary: add the transportation choice to sheet
       description: update transportation of account by id
       parameters:
         - name: id
           in: path
           description: id of account to update
-          type: string
+          type: integer
           required: True
-        - name: transportation
+        - name: method
           in: body
           description: transportation choice
           required: true
           schema:
-            type: string
+            type: object
+            properties:
+              name:
+                type: string
       responses:
         200:
           description: Successfully updated transportation methods

@@ -20,13 +20,3 @@ def sendEmail(subject, recipient, body):
     server.sendmail(sender_email, recipient, message.as_string())
     return
 
-
-sendEmail("dis can be spammed bb", "talent.z@hotmail.com", "huehuehuehuehue <3")
-
-
-# Turn these into plain/html MIMEText objects
-# part1 = MIMEText(text, "plain")
-# part2 = MIMEText(html, "html")
-
-# Create secure connection with server and send email
-

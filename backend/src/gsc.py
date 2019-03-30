@@ -25,7 +25,7 @@ accountTemplate = {
 # SAMPLE_RANGE_NAME = "CCC-Report!A2:D"
 
 
-def extractData(sheet_id, range_name):
+def buildCred():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -44,9 +44,14 @@ def extractData(sheet_id, range_name):
         with open("token.pickle", "wb") as token:
             pickle.dump(creds, token)
     service = build("sheets", "v4", credentials=creds)
-
-    # Call the Sheets API
     sheet = service.spreadsheets()
+
+    return sheet
+
+
+def extractData(sheet_id, range_name):
+    sheet = buildCred()
+    # Call the Sheets API
     result = sheet.values().get(spreadsheetId=sheet_id, range=range_name).execute()
     return result.get("values", [])
 
@@ -75,6 +80,28 @@ def extractData(sheet_id, range_name):
 #                     newAccount["quantity"] = row[5]
 #                 accounts.append(newAccount)
 #     return accounts
+
+
+def getAccountDetails(id):
+    # # getAccountDetails
+    # sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+    # range_name = "CCC-Report!A2:I"
+    # values = extractData(sheet_id, range_name)
+    # if not values:
+    #     return "No data found."
+    # else:
+    #     counts = {"at_risk": 0, "resolved": 0, "late": 0, "cancelled": 0}
+    #     for row in values:
+    #         if row[7] != "not selected":
+    #             counts["resolved"] += 1
+    #         elif row[4] != "-":
+    #             counts["at_risk"] += 1
+    #         elif row[5] != "-":
+    #             counts["late"] += 1
+    #             print(row[5])
+    #         elif row[6] != "-":
+    #             counts["cancelled"] += 1
+    return "muh"
 
 
 def getCounts():
@@ -258,70 +285,28 @@ def getAllAccounts():
     return accounts
 
 
-def createData(sheet_id, req_body):
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists("token.pickle"):
-        with open("token.pickle", "rb") as token:
-            creds = pickle.load(token)
-
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server()
-        # Save the credentials for the next run
-        with open("token.pickle", "wb") as token:
-            pickle.dump(creds, token)
-    service = build("sheets", "v4", credentials=creds)
-
-    service = build("sheets", "v4", credentials=creds)
-    request = service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=req_body)
-    response = request.execute()
-    print(response)
+def updateSheet(sheet_id, inputRange, value):
+    sheet = buildCred()
+    values = [[value]]
+    body = {"values": values}
+    result = (
+        sheet.values()
+        .update(
+            spreadsheetId=sheet_id,
+            range=inputRange,
+            valueInputOption="USER_ENTERED",
+            includeValuesInResponse="True",
+            body=body,
+        )
+        .execute()
+    )
+    return result["updatedData"]["values"][0][0]
 
 
 def setTransportation(id, method):
     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
-    range_name = "LOOKUP!A2:A4"
-
-    # # api-endpoint
-    # URL = "https://sheets.googleapis.com/v4/spreadsheets/{sheet_id}/values/LOOKUP!A1?includeValuesInResponse=true&responseValueRenderOption=UNFORMATTED_VALUE&valueInputOption=USER_ENTERED&fields=updatedData"
-    # # sending get request and saving the response as response object
-    # r = requests.get(url=URL)
-
-    # # extracting data in json format
-    # data = r.json()
-    # print(data)
-
-    body = {"rows": ['=MATCH("Search value", CCC-Report!I1:I, 0)'], "fields": "*"}
-
-    createData(sheet_id, body)
-
-    # values = [
-    #     [
-    #         # Cell values ...
-    #     ],
-    #     # Additional rows ...
-    # ]
-    # body = {"values": values}
-    # result = (
-    #     service.spreadsheets()
-    #     .values()
-    #     .update(
-    #         spreadsheetId=spreadsheet_id,
-    #         range=range_name,
-    #         valueInputOption=value_input_option,
-    #         body=body,
-    #     )
-    #     .execute()
-    # )
-    # print("{0} cells updated.".format(result.get("updatedCells")))
-
-
-# setTransportation("help", "me")
-# if __name__ == "__main__":
-#     main()
+    value = "=MATCH({},'CCC-Report'!I2:I, 0)".format(id)
+    inputRange = "LOOKUP!A2"
+    rowNum = updateSheet(sheet_id, inputRange, value)
+    rowNum = int(rowNum) + 1
+    updateRange = "CCC-Report!H{}".format(rowNum)

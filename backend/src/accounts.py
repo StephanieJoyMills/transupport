@@ -9,6 +9,7 @@ from gsc import (
     getAllAccounts,
     setTransportation,
     getCounts,
+    getAccountDetails,
 )
 from emailgenerator import sendEmail
 
@@ -20,10 +21,9 @@ def get_timestamp():
 def getAccounts(include):
     """
     Path: /api/accounts
-    :param lname:   last name of person to find
+    :param include:   what status of account we want to include aka the flag
     :return:        json list of priority accounts
     """
-    print(include)
     # all, resolved, priority, cancelled, non-resolved
     if include == "at_risk":
         accounts = getAtRiskAccounts()
@@ -42,6 +42,16 @@ def getAccounts(include):
     return accounts
 
 
+def get_account_details(id):
+    """
+    Path: /api/account/{id}
+    :param id:  id of the account we want details of   
+    :return:        json list of priority accounts
+    """
+    accountDetails = getAccountDetails(id)
+    return accountDetails
+
+
 def send_email(email):
     """
     Path: /api/send_email
@@ -56,13 +66,14 @@ def send_email(email):
 
 
 def set_transportation(id, method):
+    print(method)
     """
     Path: /api/account/{id}
     :param id:   id of account
     :param method:    transportation method selected
     :return:        status
     """
-    setTransportation(id, method)
+    setTransportation(id, method["name"])
     return "transportation method set!"
 
 
