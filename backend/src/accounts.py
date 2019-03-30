@@ -1,5 +1,10 @@
 from datetime import datetime
 from flask import make_response, abort
+
+import sys
+
+sys.path.insert(0, "../gscdb")
+
 from gsc import (
     getAtRiskAccounts,
     getLateAccounts,
