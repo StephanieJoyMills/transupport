@@ -56,25 +56,41 @@ def extractData(sheet_id, range_name):
 
 
 def getAccountDetails(id):
-    # # getAccountDetails
-    # sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
-    # range_name = "CCC-Report!A2:I"
-    # values = extractData(sheet_id, range_name)
-    # if not values:
-    #     return "No data found."
-    # else:
-    #     counts = {"at_risk": 0, "resolved": 0, "late": 0, "cancelled": 0}
-    #     for row in values:
-    #         if row[7] != "not selected":
-    #             counts["resolved"] += 1
-    #         elif row[4] != "-":
-    #             counts["at_risk"] += 1
-    #         elif row[5] != "-":
-    #             counts["late"] += 1
-    #             print(row[5])
-    #         elif row[6] != "-":
-    #             counts["cancelled"] += 1
-    return "muh"
+    sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
+    value = "=MATCH({},'CCC-Report'!I2:I, 0)".format(id)
+    inputRange = "LOOKUP!A2"
+    rowNum = updateSheet(sheet_id, inputRange, value)
+    rowNum = int(rowNum) + 1
+
+    range_name = "CCC-Report!A{}:AA{}".format(rowNum, rowNum)
+    row = extractData(sheet_id, range_name)[0]
+    account = {
+        "id": row[8],
+        "prodcode": row[0],
+        "stylnum": row[1],
+        "cust": row[3],
+        "q": row[4],
+        "dsm": row[9],
+        "gac": row[10],
+        "ogac": row[11],
+        "tm1": row[12],
+        "p": row[13],
+        "tm2": row[14],
+        "crd": row[15],
+        "lnch": row[16],
+        "actual": row[17],
+        "dm": row[18],
+        "calcETA": row[19],
+        "numdays": row[20],
+        "status": row[21],
+        "cpriority": row[22],
+        "apriority": row[23],
+        "sugtm1": row[24],
+        "sugtm2": row[25],
+        "sugtma": row[26],
+    }
+
+    return account
 
 
 def getCounts():
