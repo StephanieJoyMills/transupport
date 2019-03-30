@@ -139,8 +139,6 @@ paths:
                   type: string
                 quantity:
                   type: integer
-                transportation:
-                  type: string
     post:
       operationId: accounts.send_email
       tags:
@@ -188,6 +186,8 @@ paths:
                 type: integer
               resolved:
                 type: integer
+              not_ready:
+                type: integer
   /acount/{id}:
     get:
       operationId: accounts.get_account_details
@@ -225,6 +225,8 @@ paths:
             properties:
               name:
                 type: string
+              number:
+                type: integer
       responses:
         200:
           description: Successfully updated transportation methods

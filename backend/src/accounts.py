@@ -73,7 +73,7 @@ def set_transportation(id, method):
     :param method:    transportation method selected
     :return:        status
     """
-    setTransportation(id, method["name"])
+    setTransportation(id, method["name"], method["number"])
     return "transportation method set!"
 
 
