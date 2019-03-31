@@ -5,8 +5,8 @@ import requests
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import sys
 
-# If modifying these scopes, delete the file token.pickle.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 accountTemplate = {
@@ -18,10 +18,6 @@ accountTemplate = {
     "status": "",
     "quantity": "",
 }
-
-# The ID and range of a sample spreadsheet.
-# SAMPLE_SPREADSHEET_ID = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
-# SAMPLE_RANGE_NAME = "CCC-Report!A2:D"
 
 
 def buildCred():
@@ -88,7 +84,6 @@ def getAccountDetails(id):
         "sugtm2": row[25],
         "sugtma": row[26],
     }
-
     return account
 
 
@@ -123,8 +118,6 @@ def getCounts():
 
 
 def getAtRiskAccounts():
-    # status is 21
-    # quanitty is 4
     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
     range_name = "CCC-Report!A2:AA"
     values = extractData(sheet_id, range_name)
@@ -141,7 +134,6 @@ def getAtRiskAccounts():
                 )
                 and row[21] == "at risk"
             ):
-                print(row[10])
                 newAccount = accountTemplate.copy()
                 newAccount["id"] = row[8]
                 newAccount["product_code"] = row[0]
@@ -187,7 +179,6 @@ def getResolvedAccounts():
     sheet_id = "1hN6wGIlLDdkP6Z3o7XPtnmISHN70uYA8ks32s7Q3ZF4"
     range_name = "CCC-Report!A2:AA"
     values = extractData(sheet_id, range_name)
-
     if not values:
         return "No data found."
     else:

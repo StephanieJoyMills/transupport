@@ -2,3 +2,6 @@
 .token.pickle
 __pycache__/
 token.pickle
+token.pickle
+*.pyc
+settings.json

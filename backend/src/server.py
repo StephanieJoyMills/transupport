@@ -16,9 +16,9 @@ def home():
     This function just responds to the browser URL
     localhost:5000/
 
-    :return:    the renderd template 'home.html'
+    :return:    "Welcome to the TranSupport API!"
     """
-    return render_template("home.html")
+    return "Welcome to the TranSupport API!"
 
 
 # If we;re running in stand alone mode, run the >ptyapp
