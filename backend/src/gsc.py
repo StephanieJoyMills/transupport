@@ -47,7 +47,6 @@ def buildCred():
 
     return sheet
 
-
 def extractData(sheet_id, range_name):
     sheet = buildCred()
     # Call the Sheets API

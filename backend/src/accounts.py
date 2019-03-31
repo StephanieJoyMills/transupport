@@ -12,6 +12,7 @@ from gsc import (
     getAccountDetails,
 )
 from emailgenerator import sendEmail
+import json
 
 
 def get_timestamp():
@@ -66,7 +67,6 @@ def send_email(email):
 
 
 def set_transportation(id, method):
-    print(method)
     """
     Path: /api/account/{id}
     :param id:   id of account
