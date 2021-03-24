@@ -84,7 +84,7 @@ pytz==2013.7
 PyYAML==5.1
 requests==2.21.0
 requests-oauthlib==1.2.0
-rsa==4.0
+rsa==4.1
 scipy==0.13.0b1
 singledispatch==3.4.0.3
 six==1.12.0
