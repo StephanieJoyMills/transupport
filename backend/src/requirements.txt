@@ -91,7 +91,7 @@ six==1.12.0
 swagger-ui-bundle==0.0.3
 typing==3.6.6
 uritemplate==3.0.0
-urllib3==1.24.1
+urllib3==1.26.5
 vboxapi==1.0
 Werkzeug==0.15.1
 wrapt==1.11.1
